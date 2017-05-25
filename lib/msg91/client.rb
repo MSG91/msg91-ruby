@@ -14,9 +14,9 @@ module Msg91
       @authkey = authkey
     end
 
-    def check_balance(route)
+    def route_balance(route)
       raise Errors::MessageError, 'Invalid route' unless MessageRoute.valid_routes.include?(route)
-      request('balance.php', parameters: { type: route })
+      request('balance.php', parameters: { type: route }).to_i
     end
 
     def valid?
@@ -30,7 +30,11 @@ module Msg91
       options.deep_merge!(parameters: { authkey: authkey })
 
       response = Unirest.get("#{API_BASE_URL}/#{endpoint}", options)
-      response.body
+      clean_response(response.body)
+    end
+
+    def clean_response(response)
+      response.strip
     end
 
   end
