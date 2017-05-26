@@ -10,5 +10,6 @@ module Msg91
   autoload :MessageRoute
   autoload :Errors
   autoload :MessageFactory
+  autoload :PhonebookFactory
 
 end

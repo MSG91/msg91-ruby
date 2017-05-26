@@ -8,11 +8,12 @@ module Msg91
 
     API_BASE_URL = 'https://test.panel.msg91.com/api'.freeze
 
-    attr_reader :authkey, :messages
+    attr_reader :authkey, :messages, :phonebook
 
     def initialize(authkey)
       @authkey = authkey
       @messages = MessageFactory.new(self)
+      @phonebook = PhonebookFactory.new(self)
     end
 
     def route_balance(route)
@@ -33,7 +34,8 @@ module Msg91
     end
 
     def error_response?(response)
-      response['type'] && response['type'] == 'error'
+      response_type = response['type'] || response['msgType']
+      response_type && response_type == 'error'
     end
 
     private

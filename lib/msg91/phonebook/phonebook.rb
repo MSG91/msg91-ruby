@@ -4,11 +4,11 @@ require 'active_support/dependencies/autoload'
 module Msg91
 
   #
-  module Errors
+  module Phonebook
 
     extend ActiveSupport::Autoload
-    autoload :MessageError
-    autoload :GroupError
+
+    autoload :GroupsFactory
 
   end
 
