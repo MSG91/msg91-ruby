@@ -8,10 +8,11 @@ module Msg91
 
     API_BASE_URL = 'https://test.panel.msg91.com/api'.freeze
 
-    attr_reader :authkey
+    attr_reader :authkey, :messages
 
     def initialize(authkey)
       @authkey = authkey
+      @messages = MessageFactory.new(self)
     end
 
     def route_balance(route)
@@ -23,18 +24,23 @@ module Msg91
       request('validate.php') == 'Valid'
     end
 
-    private
-
     def request(endpoint, options = {})
       # Append authkey to request
-      options.deep_merge!(parameters: { authkey: authkey })
+      options.deep_merge!(parameters: { authkey: authkey, response: 'json' })
 
       response = Unirest.get("#{API_BASE_URL}/#{endpoint}", options)
       clean_response(response.body)
     end
 
+    def error_response?(response)
+      response['type'] && response['type'] == 'error'
+    end
+
+    private
+
     def clean_response(response)
-      response.strip
+      return response.strip if response.is_a?(String)
+      response
     end
 
   end

@@ -7,8 +7,8 @@ module Msg91
 
   autoload :Version
   autoload :Client
-  autoload :Message
   autoload :MessageRoute
   autoload :Errors
+  autoload :MessageFactory
 
 end
