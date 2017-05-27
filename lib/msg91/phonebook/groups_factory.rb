@@ -22,6 +22,15 @@ module Msg91
         group.save
       end
 
+      def list
+        request('list_group.php')
+      end
+
+      def request(endpoint, request_params = {})
+        raise Errors::GroupError, 'Invalid API client. Did you initialize using `client.phonebook.groups.new`?' unless @client
+        @client.request(endpoint, parameters: request_params)
+      end
+
     end
 
   end
