@@ -18,16 +18,16 @@ module Msg91
         end
 
         def save
-          request(group_name: name)
+          response = request('add_group.php', group_name: name)
+          raise Errors::GroupError, response['msg'] if @client.error_response?(response)
+          response['grpId']
         end
 
         private
 
-        def request(request_params)
-          raise Errors::GroupError, 'Invalid API client. Did you initialize using `client.phonebook.groups.new`?' unless @client
-          response = @client.request('add_group.php', parameters: request_params)
-          raise Errors::GroupError, response['msg'] if @client.error_response?(response)
-          response['grpId']
+        def request(endpoint, request_params = {})
+          raise Errors::GroupError, 'Invalid API client.' unless @client
+          @client.request(endpoint, parameters: request_params)
         end
 
       end

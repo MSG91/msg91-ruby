@@ -18,8 +18,10 @@ module Msg91
 
       def send
         raise Errors::MessageError, 'Already sent.' if persisted?
-        request(params)
-        id
+        response = request('sendhttp.php', params)
+        raise Errors::MessageError, response['message'] if @client.error_response?(response)
+        self.id = response['message']
+        self
       end
 
       def send_unicode
@@ -48,11 +50,9 @@ module Msg91
 
       private
 
-      def request(request_params)
-        raise Errors::MessageError, 'Invalid API client. Did you initialize using `client.messages.new`?' unless @client
-        response = @client.request('sendhttp.php', parameters: request_params)
-        raise Errors::MessageError, response['message'] if @client.error_response?(response)
-        self.id = response['message']
+      def request(endpoint, request_params = {})
+        raise Errors::MessageError, 'Invalid API client.' unless @client
+        @client.request(endpoint, parameters: request_params)
       end
 
       def whitelisted_params
