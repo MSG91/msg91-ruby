@@ -7,6 +7,7 @@ module Msg91
   module Errors
 
     extend ActiveSupport::Autoload
+    autoload :ClientError
     autoload :MessageError
     autoload :GroupError
 

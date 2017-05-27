@@ -51,7 +51,7 @@ module Msg91
       private
 
       def request(endpoint, request_params = {})
-        raise Errors::MessageError, 'Invalid API client.' unless @client
+        raise Errors::ClientError, 'Invalid API client.' unless @client
         @client.request(endpoint, parameters: request_params)
       end
 
