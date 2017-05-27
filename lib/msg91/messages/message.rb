@@ -59,8 +59,12 @@ module Msg91
         [:id, :mobiles, :sender, :message, :route, :country, :flash, :unicode, :schtime, :afterminutes, :campaign]
       end
 
+      def params_to_exclude
+        [:id]
+      end
+
       def params
-        result = whitelisted_params.map do |param|
+        result = (whitelisted_params - params_to_exclude).map do |param|
           value = instance_variable_get("@#{param}")
           [param, value] unless value.nil?
         end.compact.to_h

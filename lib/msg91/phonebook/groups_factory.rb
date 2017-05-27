@@ -13,12 +13,12 @@ module Msg91
         @client = client
       end
 
-      def new(name)
-        Groups::Group.new(@client, name)
+      def new(attributes)
+        Groups::Group.new(@client, attributes)
       end
 
-      def create(name)
-        group = Groups::Group.new(@client, name)
+      def create(attributes)
+        group = Groups::Group.new(@client, attributes)
         group.save
       end
 
