@@ -12,11 +12,14 @@ module Msg91
 
         whitelisted_params.each do |param|
           instance_variable_set("@#{param}", attributes[param]) if attributes[param]
+          self.class.send(:attr_accessor, param)
         end
       end
 
       def send
+        raise Errors::MessageError, 'Already sent.' if persisted?
         request(params)
+        id
       end
 
       def send_unicode
@@ -39,17 +42,21 @@ module Msg91
         send
       end
 
+      def persisted?
+        !id.nil?
+      end
+
       private
 
       def request(request_params)
         raise Errors::MessageError, 'Invalid API client. Did you initialize using `client.messages.new`?' unless @client
         response = @client.request('sendhttp.php', parameters: request_params)
         raise Errors::MessageError, response['message'] if @client.error_response?(response)
-        response['message']
+        self.id = response['message']
       end
 
       def whitelisted_params
-        [:mobiles, :sender, :message, :route, :country, :flash, :unicode, :schtime, :afterminutes, :campaign]
+        [:id, :mobiles, :sender, :message, :route, :country, :flash, :unicode, :schtime, :afterminutes, :campaign]
       end
 
       def params
