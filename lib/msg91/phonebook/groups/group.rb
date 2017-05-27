@@ -10,6 +10,8 @@ module Msg91
       #
       class Group
 
+        attr_reader :stale
+
         def initialize(client, attributes = {})
           @client = client
 
@@ -20,10 +22,17 @@ module Msg91
         end
 
         def save
-          response = request('add_group.php', params)
+          raise Errors::GroupError, 'Already created.' if persisted?
+          response = request('add_group.php', group_name: params[:name])
           raise Errors::GroupError, response['msg'] if @client.error_response?(response)
           self.id = response['grpId']
           self
+        end
+
+        def delete
+          response = request('delete_group.php', group_id: params[:id])
+          raise Errors::GroupError, response['msg'] if @client.error_response?(response)
+          true
         end
 
         def persisted?
@@ -38,15 +47,11 @@ module Msg91
         end
 
         def whitelisted_params
-          [:id, :group_name, :count, :name]
-        end
-
-        def params_to_exclude
-          [:id]
+          [:id, :count, :name]
         end
 
         def params
-          (whitelisted_params - params_to_exclude).map do |param|
+          whitelisted_params.map do |param|
             value = instance_variable_get("@#{param}")
             [param, value] unless value.nil?
           end.compact.to_h
