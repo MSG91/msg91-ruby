@@ -38,7 +38,7 @@ module Msg91
         end
 
         def whitelisted_params
-          [:id, :group_name]
+          [:id, :group_name, :count, :name]
         end
 
         def params_to_exclude

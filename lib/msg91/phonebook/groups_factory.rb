@@ -1,3 +1,4 @@
+require 'active_support/core_ext/hash/indifferent_access'
 require_relative 'groups/group'
 
 #
@@ -23,7 +24,10 @@ module Msg91
       end
 
       def list
-        request('list_group.php')
+        response = request('list_group.php')
+        response.map do |attribs|
+          Groups::Group.new(@client, attribs.with_indifferent_access)
+        end
       end
 
       private
