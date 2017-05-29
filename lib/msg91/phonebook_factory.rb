@@ -8,22 +8,22 @@ module Msg91
 
     attr_reader :groups
 
-    def initialize(client)
-      @client = client
-      @groups = Phonebook::GroupsFactory.new(client)
+    def initialize(api_client)
+      @api_client = api_client
+      @groups = Phonebook::GroupsFactory.new(api_client)
     end
 
     def delete_group(id)
       response = request('delete_group.php', group_id: id)
-      raise Errors::GroupError, response['msg'] if @client.error_response?(response)
+      raise Errors::GroupError, response['msg'] if @api_client.error_response?(response)
       true
     end
 
     private
 
     def request(endpoint, request_params = {})
-      raise Errors::ClientError, 'Invalid API client.' unless @client
-      @client.request(endpoint, parameters: request_params)
+      raise Errors::ApiClientError, 'Invalid API client.' unless @api_client
+      @api_client.request(endpoint, parameters: request_params)
     end
 
   end

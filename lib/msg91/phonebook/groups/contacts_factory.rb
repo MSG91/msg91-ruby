@@ -14,8 +14,8 @@ module Msg91
 
         attr_reader :group
 
-        def initialize(client, group)
-          @client = client
+        def initialize(api_client, group)
+          @api_client = api_client
           @group = group
         end
 
@@ -25,7 +25,7 @@ module Msg91
 
           response.map do |contact|
             unless contact['contactid'].nil?
-              Contacts::Contact.new(@client, id: contact['contactid'], name: contact['name'], number: contact['number'])
+              Contacts::Contact.new(@api_client, id: contact['contactid'], name: contact['name'], number: contact['number'])
             end
           end.compact
         end
@@ -33,8 +33,8 @@ module Msg91
         private
 
         def request(endpoint, request_params = {})
-          raise Errors::ClientError, 'Invalid API client.' unless @client
-          @client.request(endpoint, parameters: request_params)
+          raise Errors::ApiClientError, 'Invalid API client.' unless @api_client
+          @api_client.request(endpoint, parameters: request_params)
         end
 
         def valid_response?(response)

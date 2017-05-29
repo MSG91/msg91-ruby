@@ -10,31 +10,31 @@ module Msg91
     #
     class GroupsFactory
 
-      def initialize(client)
-        @client = client
+      def initialize(api_client)
+        @api_client = api_client
       end
 
       def new(attributes)
-        Groups::Group.new(@client, attributes)
+        Groups::Group.new(@api_client, attributes)
       end
 
       def create(attributes)
-        group = Groups::Group.new(@client, attributes)
+        group = Groups::Group.new(@api_client, attributes)
         group.save
       end
 
       def list
         response = request('list_group.php')
         response.map do |attribs|
-          Groups::Group.new(@client, attribs.with_indifferent_access)
+          Groups::Group.new(@api_client, attribs.with_indifferent_access)
         end
       end
 
       private
 
       def request(endpoint, request_params = {})
-        raise Errors::ClientError, 'Invalid API client.' unless @client
-        @client.request(endpoint, parameters: request_params)
+        raise Errors::ApiClientError, 'Invalid API client.' unless @api_client
+        @api_client.request(endpoint, parameters: request_params)
       end
 
     end

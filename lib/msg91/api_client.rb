@@ -2,18 +2,19 @@
 module Msg91
 
   #
-  class Client
+  class ApiClient
 
     require 'unirest'
 
     API_BASE_URL = 'https://test.panel.msg91.com/api'.freeze
 
-    attr_reader :authkey, :messages, :phonebook
+    attr_reader :authkey, :messages, :phonebook, :resellers
 
     def initialize(authkey)
       @authkey = authkey
       @messages = MessageFactory.new(self)
       @phonebook = PhonebookFactory.new(self)
+      @resellers = ResellerFactory.new(self)
     end
 
     def route_balance(route)

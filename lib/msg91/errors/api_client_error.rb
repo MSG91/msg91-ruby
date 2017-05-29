@@ -5,7 +5,7 @@ module Msg91
   module Errors
 
     #
-    class ClientError < StandardError
+    class ApiClientError < StandardError
 
       def initialize(msg)
         super(msg)

@@ -13,8 +13,8 @@ module Msg91
         #
         class Contact
 
-          def initialize(client, attributes = {})
-            @client = client
+          def initialize(api_client, attributes = {})
+            @api_client = api_client
 
             whitelisted_params.each do |param|
               instance_variable_set("@#{param}", attributes[param]) if attributes[param]
@@ -25,8 +25,8 @@ module Msg91
           private
 
           def request(endpoint, request_params = {})
-            raise Errors::ClientError, 'Invalid API client.' unless @client
-            @client.request(endpoint, parameters: request_params)
+            raise Errors::ApiClientError, 'Invalid API client.' unless @api_client
+            @api_client.request(endpoint, parameters: request_params)
           end
 
           def whitelisted_params

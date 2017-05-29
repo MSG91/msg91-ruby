@@ -6,10 +6,11 @@ module Msg91
   extend ActiveSupport::Autoload
 
   autoload :Version
-  autoload :Client
+  autoload :ApiClient
   autoload :MessageRoute
   autoload :Errors
   autoload :MessageFactory
   autoload :PhonebookFactory
+  autoload :ResellerFactory
 
 end
