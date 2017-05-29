@@ -1,3 +1,5 @@
+require 'active_support/dependencies/autoload'
+
 #
 module Msg91
 
@@ -7,13 +9,17 @@ module Msg91
     #
     module Groups
 
+      extend ActiveSupport::Autoload
+      autoload :ContactsFactory
+
       #
       class Group
 
-        attr_reader :stale
+        attr_reader :contacts
 
         def initialize(client, attributes = {})
           @client = client
+          @contacts = ContactsFactory.new(client, self)
 
           whitelisted_params.each do |param|
             instance_variable_set("@#{param}", attributes[param]) if attributes[param]
@@ -35,10 +41,6 @@ module Msg91
           true
         end
 
-        def persisted?
-          !id.nil?
-        end
-
         private
 
         def request(endpoint, request_params = {})
@@ -55,6 +57,10 @@ module Msg91
             value = instance_variable_get("@#{param}")
             [param, value] unless value.nil?
           end.compact.to_h
+        end
+
+        def persisted?
+          !id.nil?
         end
 
       end

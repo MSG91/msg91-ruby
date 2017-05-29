@@ -44,10 +44,6 @@ module Msg91
         send
       end
 
-      def persisted?
-        !id.nil?
-      end
-
       private
 
       def request(endpoint, request_params = {})
@@ -71,6 +67,10 @@ module Msg91
 
         result[:mobiles] = result[:mobiles].join(',') if result[:mobiles].is_a?(Array)
         result
+      end
+
+      def persisted?
+        !id.nil?
       end
 
     end

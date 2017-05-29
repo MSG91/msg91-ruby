@@ -10,6 +10,7 @@ module Msg91
     autoload :ClientError
     autoload :MessageError
     autoload :GroupError
+    autoload :ContactError
 
   end
 
