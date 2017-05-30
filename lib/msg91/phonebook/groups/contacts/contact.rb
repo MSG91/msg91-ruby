@@ -28,6 +28,12 @@ module Msg91
             update
           end
 
+          def delete
+            response = request('delete_contact.php', contact_id: params[:id])
+            raise Errors::ContactError, response['msg'] if @api_client.error_response?(response)
+            true
+          end
+
           private
 
           def request(endpoint, request_params = {})
@@ -57,7 +63,7 @@ module Msg91
           def update
             parameters = params
             response = request('edit_contact.php', contact_id: parameters[:id], mob_no: parameters[:number],
-                                                   name: parameters[:name], group: @group.id)
+                               name: parameters[:name], group: @group.id)
             raise Errors::ContactError, response['msg'] if @api_client.error_response?(response)
             self
           end

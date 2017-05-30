@@ -19,6 +19,12 @@ module Msg91
       true
     end
 
+    def delete_contact(id)
+      response = request('delete_contact.php', contact_id: id)
+      raise Errors::ContactError, response['msg'] if @api_client.error_response?(response)
+      true
+    end
+
     private
 
     def request(endpoint, request_params = {})
