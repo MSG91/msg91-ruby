@@ -20,12 +20,7 @@ module Msg91
         end
 
         def save
-          raise Errors::ClientError, 'Already created.' if persisted?
-          response = request('add_client.php', api_attribs)
-          raise Errors::GroupError, response['msg_arr'] if @api_client.error_response?(response)
-          response
-          # self.id = response['grpId']
-          # self
+          raise NotImplementedError, 'This feature is not available yet.'
         end
 
         private
