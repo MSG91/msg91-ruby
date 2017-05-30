@@ -24,6 +24,10 @@ module Msg91
         end.compact
       end
 
+      def new(attributes)
+        Clients::Client.new(@api_client, attributes)
+      end
+
       private
 
       def request(endpoint, request_params = {})

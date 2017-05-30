@@ -35,7 +35,7 @@ module Msg91
     end
 
     def error_response?(response)
-      response_type = response['type'] || response['msgType']
+      response_type = response['type'] || response['msgType'] || response['msg_type']
       response_type && response_type == 'error'
     end
 

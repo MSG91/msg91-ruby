@@ -13,13 +13,19 @@ module Msg91
         #
         class Contact
 
-          def initialize(api_client, attributes = {})
+          def initialize(api_client, group, attributes = {})
             @api_client = api_client
+            @group = group
 
             whitelisted_params.each do |param|
               instance_variable_set("@#{param}", attributes[param]) if attributes[param]
               self.class.send(:attr_accessor, param)
             end
+          end
+
+          def save
+            return create unless persisted?
+            update
           end
 
           private
@@ -42,6 +48,18 @@ module Msg91
 
           def persisted?
             !id.nil?
+          end
+
+          def create
+            raise NotImplementedError, 'This feature is not available yet.'
+          end
+
+          def update
+            parameters = params
+            response = request('edit_contact.php', contact_id: parameters[:id], mob_no: parameters[:number],
+                                                   name: parameters[:name], group: @group.id)
+            raise Errors::ContactError, response['msg'] if @api_client.error_response?(response)
+            self
           end
 
         end

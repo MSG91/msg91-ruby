@@ -25,9 +25,14 @@ module Msg91
 
           response.map do |contact|
             unless contact['contactid'].nil?
-              Contacts::Contact.new(@api_client, id: contact['contactid'], name: contact['name'], number: contact['number'])
+              Contacts::Contact.new(@api_client, @group, id: contact['contactid'], name: contact['name'],
+                                                         number: contact['number'])
             end
           end.compact
+        end
+
+        def new(attributes = {})
+          Contacts::Contact.new(@client, @group, attributes)
         end
 
         private
