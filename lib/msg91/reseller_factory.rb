@@ -13,6 +13,13 @@ module Msg91
       @clients = Resellers::ClientFactory.new(api_client)
     end
 
+    def update_client_balance(id, sms: nil, price: nil, route: nil, direction: nil, description: nil)
+      response = request('transfer_credit.php', client_id: id, sms: sms, accounttype: route, type: direction,
+                                                price: price, description: description)
+      raise Errors::ClientError, response['msg'] if @api_client.error_response?(response)
+      true
+    end
+
     private
 
     def request(endpoint, request_params = {})

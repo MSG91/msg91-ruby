@@ -12,5 +12,6 @@ module Msg91
   autoload :MessageFactory
   autoload :PhonebookFactory
   autoload :ResellerFactory
+  autoload :ResellerTransaction
 
 end

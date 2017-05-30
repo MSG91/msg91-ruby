@@ -23,6 +23,18 @@ module Msg91
           raise NotImplementedError, 'This feature is not available yet.'
         end
 
+        def debit(sms: nil, price: nil, route: nil, description: nil)
+          @api_client.resellers.update_client_balance(id, sms: sms, price: price, route: route,
+                                                          description: description,
+                                                          direction: ResellerTransaction::DEBIT)
+        end
+
+        def credit(sms: nil, price: nil, route: nil, description: nil)
+          @api_client.resellers.update_client_balance(id, sms: sms, price: price, route: route,
+                                                          description: description,
+                                                          direction: ResellerTransaction::CREDIT)
+        end
+
         private
 
         def request(endpoint, request_params = {})
