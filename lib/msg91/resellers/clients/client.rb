@@ -35,6 +35,10 @@ module Msg91
                                                           direction: ResellerTransaction::CREDIT)
         end
 
+        def change_password(new_password)
+          @api_client.resellers.change_client_password(params[:name], new_password)
+        end
+
         private
 
         def request(endpoint, request_params = {})

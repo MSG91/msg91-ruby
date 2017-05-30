@@ -20,6 +20,12 @@ module Msg91
       true
     end
 
+    def change_client_password(user_name, new_password)
+      response = request('ChangePassByReseller.php', client: user_name, client_pass: new_password)
+      raise Errors::ClientError, response['msg'] if @api_client.error_response?(response)
+      true
+    end
+
     private
 
     def request(endpoint, request_params = {})
