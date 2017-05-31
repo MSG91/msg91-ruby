@@ -23,7 +23,7 @@ module Msg91
     end
 
     def valid?
-      request('validate.php') == 'Valid'
+      request('validate.php')['message'] == 'Valid'
     end
 
     def request(endpoint, options = {})
