@@ -32,7 +32,7 @@ module Msg91
         end
 
         def new(attributes = {})
-          Contacts::Contact.new(@client, @group, attributes)
+          Contacts::Contact.new(@api_client, @group, attributes)
         end
 
         private

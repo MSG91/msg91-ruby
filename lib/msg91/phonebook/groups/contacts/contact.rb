@@ -57,13 +57,18 @@ module Msg91
           end
 
           def create
-            raise NotImplementedError, 'This feature is not available yet.'
+            parameters = params
+            response = request('add_contact.php', mob_no: parameters[:number], name: parameters[:name],
+                                                  group: @group.id, returnId: true)
+            raise Errors::ContactError, response['msg'] if @api_client.error_response?(response)
+            self.id = response['contact_id']
+            self
           end
 
           def update
             parameters = params
             response = request('edit_contact.php', contact_id: parameters[:id], mob_no: parameters[:number],
-                               name: parameters[:name], group: @group.id)
+                                                   name: parameters[:name], group: @group.id)
             raise Errors::ContactError, response['msg'] if @api_client.error_response?(response)
             self
           end
