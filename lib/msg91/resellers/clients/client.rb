@@ -20,19 +20,23 @@ module Msg91
         end
 
         def save
-          raise NotImplementedError, 'This feature is not available yet.'
+          raise Errors::ClientError, 'Already created.' if persisted?
+          response = request('add_client.php', api_attribs.merge(returnId: true))
+          raise Errors::ClientError, response['msg_arr'] if @api_client.error_response?(response)
+          self.id = response['user_id']
+          self
         end
 
         def debit(sms: nil, price: nil, route: nil, description: nil)
           @api_client.resellers.update_client_balance(id, sms: sms, price: price, route: route,
-                                                          description: description,
-                                                          direction: ResellerTransaction::DEBIT)
+                                                      description: description,
+                                                      direction: ResellerTransaction::DEBIT)
         end
 
         def credit(sms: nil, price: nil, route: nil, description: nil)
           @api_client.resellers.update_client_balance(id, sms: sms, price: price, route: route,
-                                                          description: description,
-                                                          direction: ResellerTransaction::CREDIT)
+                                                      description: description,
+                                                      direction: ResellerTransaction::CREDIT)
         end
 
         def change_password(new_password)
