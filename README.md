@@ -7,16 +7,12 @@ Send your next message via MSG91 in ruby.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'msg91'
+gem 'msg91', git: 'git://github.com/MSG91/msg91-ruby.git'
 ```
 
 And then execute:
 
     $ bundle
-
-Or install it yourself as:
-
-    $ gem install msg91
 
 ## Usage
 
