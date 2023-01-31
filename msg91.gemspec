@@ -34,6 +34,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
 
-  spec.add_runtime_dependency 'activesupport', '>= 5.1.1', '< 6.1.0'
+  spec.add_runtime_dependency 'activesupport', '>= 5.1.1', '< 7.1.0'
   spec.add_runtime_dependency 'unirest', '~> 1.1.2'
 end
